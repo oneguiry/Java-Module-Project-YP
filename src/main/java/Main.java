@@ -1,6 +1,8 @@
-
 public class Main {
+
+
     public static void main(String[] args) {
-        System.out.println("QQ");
+        System.out.println("На сколько человек поделить счет?\nВведите количество:");
+        Calculator.calc();
     }
 }
