@@ -7,26 +7,31 @@ public class Calculator {
     private static final HashMap<String, Float> bill = new HashMap<>();
 
     public static int getCountPerson() {
-        int countPerson = in.nextInt();
+        int countPerson = 1;
         while (countPerson <= 1) {
-            if (countPerson == 1) {
-                System.out.println("Какой смысл считать для 1?Попробуй еще раз");
+            if (in.hasNextInt()) {
+                countPerson = in.nextInt();
+                if (countPerson == 1) {
+                    System.out.println("Какой смысл считать для 1?Попробуй еще раз");
+                } else {
+                    System.out.println("Вы ввели некоректное число. Количество возможно от 2 и больше");
+                }
             } else {
-                System.out.println("Вы ввели некоректное число. Количество возможно от 2 и больше");
+                System.out.println("Вы ввели недопустимый формат. Доступается ввод только чисел");
+                in.next();
             }
-            countPerson = in.nextInt();
         }
         return countPerson;
     }
 
-    private static String getNamed(Float price) {
-        String rub;
-        if (price == 1) {
-            rub = "рубль";
+    public static String getNamed(int amount) {
+        if (amount % 10 == 1 && amount % 100 != 11) {
+            return "рубль";
+        } else if ((amount % 10 >= 2 && amount % 10 <= 4) && !(amount % 100 >= 12 && amount % 100 <= 14)) {
+            return "рубля";
         } else {
-            rub = "рублей";
+            return "рублей";
         }
-        return rub;
     }
 
     private static float getCostToProduct() {
@@ -62,17 +67,20 @@ public class Calculator {
                     Float countSum = 0.0f;
                     Iterator<String> iterator = bill.keySet().iterator();
                     int i = 0;
-                    Float cost;
+                    Float cost = 0.0f;
                     String rub;
                     while (iterator.hasNext()) {
                         String key = iterator.next();
                         cost = bill.get(key);
+                        int tmpCostName = cost.intValue();
                         i++;
-                        rub = getNamed(cost);
+                        rub = getNamed(tmpCostName);
                         countSum += cost;
                         System.out.printf("Товар №%d: %s %.2f %s%n", i, key, cost, rub);
                     }
-                    rub = getNamed(countSum);
+                    int tmpCostName = (int) (countSum / countPerson);
+                    rub = getNamed(tmpCostName);
+                    System.out.printf("%f %d\n",countSum, countPerson);
                     System.out.printf("Сумма на каждого человека %.2f %s%n", countSum / countPerson, rub);
                 }
                 case "завершить" -> {
